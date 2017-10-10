@@ -128,3 +128,15 @@ TEST(Visit_Heterogenous, Quintuple) {
   mpark::variant<long, short> z(303L);
   EXPECT_EQ("101+202=303", mpark::visit(concat{}, v, w, x, y, z));
 }
+
+TEST(VisitR, Typical) {
+  mpark::variant<int, long> v = 42L;
+  auto result = mpark::visit<int>([](auto x) { return x; }, v);
+  static_assert(std::is_same<decltype(result), int>::value, "");
+  EXPECT_EQ(42, result);
+}
+
+TEST(VisitR, Void) {
+  mpark::variant<int, long> v = 42L;
+  mpark::visit<void>([](auto x) { return x; }, v);
+}
